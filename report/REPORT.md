@@ -1,7 +1,7 @@
 # Day 7 Lab Report - Data Foundations: Embedding & Vector Store
 
-**Student Name:** Tran Dinh Minh Vuong  
-**Student ID:** 2A202600495  
+**Student Name:** Tran Dinh Minh Vuong 
+**Student ID:** 2A202600495 
 **Date:** April 10, 2026
 
 ---
@@ -52,9 +52,9 @@ Formula: `num_chunks = ceil((doc_length - overlap) / (chunk_size - overlap))`
 Calculation:
 ```
 num_chunks = ceil((10,000 - 50) / (500 - 50))
-           = ceil(9,950 / 450)
-           = ceil(22.11)
-           = 23 chunks
+ = ceil(9,950 / 450)
+ = ceil(22.11)
+ = 23 chunks
 ```
 
 **Expected number of chunks: 23**
@@ -64,9 +64,9 @@ If overlap is increased to 100:
 
 ```
 num_chunks = ceil((10,000 - 100) / (500 - 100))
-           = ceil(9,900 / 400)
-           = ceil(24.75)
-           = 25 chunks
+ = ceil(9,900 / 400)
+ = ceil(24.75)
+ = 25 chunks
 ```
 
 **New number of chunks: 25**
@@ -132,41 +132,41 @@ I ran `ChunkingStrategyComparator().compare()` on the VinUni admission overview 
 **Analysis:**
 
 1. **Fixed Size Strategy:**
-   - Most predictable and consistent chunk sizes
-   - May split sentences awkwardly at boundaries
-   - Good for: Documents where uniform chunk size is important for processing
+ - Most predictable and consistent chunk sizes
+ - May split sentences awkwardly at boundaries
+ - Good for: Documents where uniform chunk size is important for processing
 
 2. **By Sentences Strategy:**
-   - Creates larger, more coherent chunks
-   - Preserves sentence boundaries, maintaining readability
-   - Variable chunk sizes (some very large)
-   - Good for: Documents where semantic coherence is critical
+ - Creates larger, more coherent chunks
+ - Preserves sentence boundaries, maintaining readability
+ - Variable chunk sizes (some very large)
+ - Good for: Documents where semantic coherence is critical
 
 3. **Recursive Strategy:**
-   - Creates the most chunks with smallest average size
-   - Tries to split at natural boundaries (paragraphs, then sentences, then words)
-   - More granular, potentially better for precise retrieval
-   - Good for: Documents with clear hierarchical structure
+ - Creates the most chunks with smallest average size
+ - Tries to split at natural boundaries (paragraphs, then sentences, then words)
+ - More granular, potentially better for precise retrieval
+ - Good for: Documents with clear hierarchical structure
 
 **First 3 Chunks Preview:**
 
 **Fixed Size:**
 ```
-[1] # VinUni Admission Overview  ## About VinUniversity  VinUniversity (VinUni) is a premier private uni...
+[1] # VinUni Admission Overview ## About VinUniversity VinUniversity (VinUni) is a premier private uni...
 [2] ike Cornell University and the University of Pennsylvania, VinUni provides an internationally recogn...
 [3] e - Marketing - Operations and Supply Management - Hospitality Leadership - Entrepreneurship - Busin...
 ```
 
 **By Sentences:**
 ```
-[1] # VinUni Admission Overview  ## About VinUniversity  VinUniversity (VinUni) is a premier private uni...
+[1] # VinUni Admission Overview ## About VinUniversity VinUniversity (VinUni) is a premier private uni...
 [2] College of Business & Management - Finance - Marketing - Operations and Supply Management - Hospital...
 [3] College of Engineering and Computer Science - Computer Science - Electrical Engineering - Mechanical...
 ```
 
 **Recursive:**
 ```
-[1] # VinUni Admission Overview  ## About VinUniversity...
+[1] # VinUni Admission Overview ## About VinUniversity...
 [2] VinUniversity (VinUni) is a premier private university in Vietnam, known for its world-class educati...
 [3] Partnering with top global institutions like Cornell University and the University of Pennsylvania, ...
 ```
@@ -380,24 +380,24 @@ This demonstrates the importance of using quality embeddings in production RAG s
 ### Key Takeaways
 
 1. **Chunking is an art and science:**
-   - No one-size-fits-all strategy
-   - Document structure matters (FAQs vs essays vs technical docs)
-   - Trade-offs between coherence and granularity
+ - No one-size-fits-all strategy
+ - Document structure matters (FAQs vs essays vs technical docs)
+ - Trade-offs between coherence and granularity
 
 2. **Embeddings are the foundation:**
-   - Quality of embeddings directly impacts retrieval quality
-   - Mock embeddings are useful for testing but not for evaluation
-   - Real semantic embeddings understand context and synonyms
+ - Quality of embeddings directly impacts retrieval quality
+ - Mock embeddings are useful for testing but not for evaluation
+ - Real semantic embeddings understand context and synonyms
 
 3. **RAG pattern is powerful but simple:**
-   - Three steps: retrieve, build prompt, generate
-   - The quality of retrieval determines answer quality
-   - Prompt engineering matters for grounding
+ - Three steps: retrieve, build prompt, generate
+ - The quality of retrieval determines answer quality
+ - Prompt engineering matters for grounding
 
 4. **Metadata is underutilized:**
-   - Filtering by metadata can dramatically improve precision
-   - Good metadata schema design is crucial
-   - Hybrid search (semantic + metadata) is often best
+ - Filtering by metadata can dramatically improve precision
+ - Good metadata schema design is crucial
+ - Hybrid search (semantic + metadata) is often best
 
 ### Failure Analysis
 
@@ -416,38 +416,38 @@ This demonstrates the importance of using quality embeddings in production RAG s
 ### Technical Challenges Overcome
 
 1. **Recursive splitting logic:**
-   - Challenge: Handling edge cases (empty separators, no separators left)
-   - Solution: Clear base cases and careful separator reconstruction
+ - Challenge: Handling edge cases (empty separators, no separators left)
+ - Solution: Clear base cases and careful separator reconstruction
 
 2. **In-memory vs ChromaDB abstraction:**
-   - Challenge: Supporting both backends with same interface
-   - Solution: Conditional logic in each method, normalized return format
+ - Challenge: Supporting both backends with same interface
+ - Solution: Conditional logic in each method, normalized return format
 
 3. **Metadata filtering:**
-   - Challenge: Efficient filtering before similarity search
-   - Solution: Pre-filter records, then search only filtered subset
+ - Challenge: Efficient filtering before similarity search
+ - Solution: Pre-filter records, then search only filtered subset
 
 ### Future Improvements
 
 1. **Better chunking strategies:**
-   - Semantic chunking (split when topic changes)
-   - Sliding window with dynamic overlap
-   - Header-aware chunking for structured documents
+ - Semantic chunking (split when topic changes)
+ - Sliding window with dynamic overlap
+ - Header-aware chunking for structured documents
 
 2. **Hybrid search:**
-   - Combine semantic search with keyword search (BM25)
-   - Use metadata filtering more aggressively
-   - Re-ranking based on multiple signals
+ - Combine semantic search with keyword search (BM25)
+ - Use metadata filtering more aggressively
+ - Re-ranking based on multiple signals
 
 3. **Evaluation metrics:**
-   - Implement precision@k, recall@k
-   - Measure chunk coherence automatically
-   - A/B test different strategies systematically
+ - Implement precision@k, recall@k
+ - Measure chunk coherence automatically
+ - A/B test different strategies systematically
 
 4. **Production considerations:**
-   - Caching for frequently accessed chunks
-   - Batch processing for large document sets
-   - Monitoring and logging for debugging
+ - Caching for frequently accessed chunks
+ - Batch processing for large document sets
+ - Monitoring and logging for debugging
 
 ---
 
@@ -462,11 +462,11 @@ All 42 tests passed successfully:
 ```
 
 **Test Coverage:**
-- Chunking strategies: 19 tests ✅
-- EmbeddingStore: 14 tests ✅
-- KnowledgeBaseAgent: 2 tests ✅
-- Similarity computation: 4 tests ✅
-- Project structure: 3 tests ✅
+- Chunking strategies: 19 tests 
+- EmbeddingStore: 14 tests 
+- KnowledgeBaseAgent: 2 tests 
+- Similarity computation: 4 tests 
+- Project structure: 3 tests 
 
 ### Code Organization
 

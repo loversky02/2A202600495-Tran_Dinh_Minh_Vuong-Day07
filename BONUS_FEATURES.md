@@ -2,11 +2,11 @@
 
 This document describes optional bonus features implemented beyond the core lab requirements.
 
-## 🎯 Overview
+## Overview
 
 While the lab only requires implementing the core TODO items and passing all tests, I've added additional features to demonstrate advanced understanding of RAG systems and domain-specific optimizations.
 
-## ✨ Bonus Features Implemented
+## Bonus Features Implemented
 
 ### 1. Custom Chunking Strategies
 
@@ -18,18 +18,18 @@ Two domain-specific chunking strategies designed for VinUni admission documents:
 - **Purpose:** Optimized for FAQ documents
 - **Strategy:** Detects Q&A patterns and keeps each pair together as a semantic unit
 - **Benefits:**
-  - Better context preservation for question-answering tasks
-  - Prevents splitting questions from their answers
-  - Maintains semantic coherence
+ - Better context preservation for question-answering tasks
+ - Prevents splitting questions from their answers
+ - Maintains semantic coherence
 - **Results:** 33 chunks (avg 279 chars) vs 38 chunks (Fixed Size) on FAQ document
 
 #### HeaderAwareChunker
 - **Purpose:** Optimized for Markdown documents with hierarchical structure
 - **Strategy:** Splits by headers while keeping headers with their content
 - **Benefits:**
-  - Respects document structure
-  - Maintains section context
-  - Better semantic preservation
+ - Respects document structure
+ - Maintains section context
+ - Better semantic preservation
 - **Results:** 16 chunks (avg 201 chars) vs 13 chunks (Fixed Size) on Markdown document
 
 **Usage:**
@@ -92,16 +92,16 @@ store = EmbeddingStore(collection_name='my_docs')
 
 # Persistent mode (for production)
 store = EmbeddingStore(
-    collection_name='my_docs',
-    persist_directory='./chroma_db'
+ collection_name='my_docs',
+ persist_directory='./chroma_db'
 )
 ```
 
 **Benefits:**
-- ✅ Data survives application restarts
-- ✅ No need to re-index documents every time
-- ✅ Faster startup for large document collections
-- ✅ Suitable for production deployments
+- Data survives application restarts
+- No need to re-index documents every time
+- Faster startup for large document collections
+- Suitable for production deployments
 
 **Test:**
 ```bash
@@ -112,15 +112,15 @@ python test_chromadb_persistence.py
 python demo_persistence_comparison.py
 
 # Cleanup
-rm -rf ./chroma_db ./demo_chroma_db  # Linux/Mac
-rmdir /s /q .\chroma_db .\demo_chroma_db  # Windows
+rm -rf ./chroma_db ./demo_chroma_db # Linux/Mac
+rmdir /s /q .\chroma_db .\demo_chroma_db # Windows
 ```
 
 **Trade-offs:**
 - In-memory: Faster, good for testing, data lost on restart
 - Persistent: Slightly slower (disk I/O), suitable for production, data persists
 
-## 📊 Comparison Results
+## Comparison Results
 
 ### Custom Chunkers vs Baseline
 
@@ -130,16 +130,16 @@ rmdir /s /q .\chroma_db .\demo_chroma_db  # Windows
 | Fixed Size (300) | 38 | 295 chars | May split Q&A pairs |
 | Sentence (3) | 28 | 332 chars | Better than fixed but still splits pairs |
 | Recursive (300) | 56 | 166 chars | Too granular for FAQs |
-| **FAQ Custom (500)** | **33** | **279 chars** | **Keeps Q&A pairs together** ✓ |
+| **FAQ Custom (500)** | **33** | **279 chars** | **Keeps Q&A pairs together** |
 
 **On Markdown Document (3,196 characters):**
 | Strategy | Chunks | Avg Length | Notes |
 |----------|--------|------------|-------|
 | Fixed Size (300) | 13 | 292 chars | Ignores structure |
 | Recursive (300) | 18 | 176 chars | Better but still structure-agnostic |
-| **Header-Aware (500)** | **16** | **201 chars** | **Respects markdown hierarchy** ✓ |
+| **Header-Aware (500)** | **16** | **201 chars** | **Respects markdown hierarchy** |
 
-## 🎓 Learning Outcomes
+## Learning Outcomes
 
 These bonus features demonstrate:
 
@@ -148,21 +148,21 @@ These bonus features demonstrate:
 3. **Production readiness:** Awareness of real embeddings vs mock embeddings
 4. **Advanced implementation:** Going beyond basic requirements to solve real-world problems
 
-## 📝 Documentation
+## Documentation
 
 All bonus features are documented in:
 - `report/REPORT.md` - Section 3 (Custom Chunking Strategies)
 - `report/REPORT.md` - Section 5 (Real Embeddings Testing)
 - This file (`BONUS_FEATURES.md`)
 
-## ⚠️ Important Notes
+## ️ Important Notes
 
 1. **These features are OPTIONAL** - Not required for lab completion
 2. **All core requirements are met** - 42/42 tests passing
 3. **Real embeddings require additional setup** - `pip install sentence-transformers`
 4. **Custom chunkers are domain-specific** - May not work well on other document types
 
-## 🚀 Future Enhancements
+## Future Enhancements
 
 Potential additional bonus features (not implemented):
 - Hybrid search (semantic + keyword/BM25)
@@ -170,9 +170,9 @@ Potential additional bonus features (not implemented):
 - Automatic evaluation metrics (precision@k, recall@k)
 - Caching for frequently accessed chunks
 - A/B testing framework for strategies
-- ~~ChromaDB persistence~~ ✅ **IMPLEMENTED**
+- ~~ChromaDB persistence~~ **IMPLEMENTED**
 
-## 📚 References
+## References
 
 - Sentence Transformers: https://www.sbert.net/
 - Chunking Strategies: https://www.pinecone.io/learn/chunking-strategies/
