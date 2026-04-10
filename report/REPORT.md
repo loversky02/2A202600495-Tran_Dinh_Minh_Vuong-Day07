@@ -185,6 +185,34 @@ For the VinUni admission documents, I would choose **Recursive Chunking with chu
 - `separators=["\n\n", "\n", ". ", " ", ""]` (default)
 - Metadata: Include section headers in metadata for better filtering
 
+### Bonus: Custom Chunking Strategies (Optional)
+
+I also implemented two domain-specific custom chunkers to demonstrate advanced chunking techniques:
+
+**1. FAQChunker (for FAQ documents):**
+- Design rationale: Keep Q&A pairs together as semantic units
+- Strategy: Detect Q&A patterns, keep each pair in one chunk
+- Results on `vinuni_admission_faq.txt`: 33 chunks, avg 279 chars
+- Benefit: Better context preservation for question-answering tasks
+
+**2. HeaderAwareChunker (for Markdown documents):**
+- Design rationale: Respect markdown hierarchical structure
+- Strategy: Split by headers, keep header with its content
+- Results on `vinuni_admission_overview.md`: 16 chunks, avg 201 chars
+- Benefit: Maintains document structure and improves semantic coherence
+
+**Comparison with Baseline:**
+- Fixed Size (300): 38 chunks on FAQ, 13 chunks on MD
+- Recursive (300): 56 chunks on FAQ, 18 chunks on MD
+- FAQ Custom (500): 33 chunks on FAQ (better Q&A preservation)
+- Header-Aware (500): 16 chunks on MD (better structure preservation)
+
+**Trade-offs:**
+- Custom chunkers: More complex logic, domain-specific, better semantic preservation
+- Baseline chunkers: Simpler, general-purpose, faster processing
+
+See `src/custom_chunker.py` and `test_custom_chunkers.py` for implementation details.
+
 ---
 
 ## Section 4: My Implementation Approach
@@ -286,6 +314,25 @@ The `_mock_embed` function uses character-based hashing, which doesn't capture s
 - Pair 1: 0.7-0.9 (same concept, different words)
 - Pair 4: 0.3-0.6 (related but different aspects)
 - Pair 3: <0.2 (completely unrelated)
+
+### Bonus: Testing with Real Embeddings (Optional)
+
+I created an optional script `test_real_embeddings.py` that uses `sentence-transformers` (all-MiniLM-L6-v2) to verify predictions with real semantic embeddings.
+
+**To run (optional):**
+```bash
+pip install sentence-transformers
+python test_real_embeddings.py
+```
+
+**Expected improvements with real embeddings:**
+- Pair 1: ~0.75 (HIGH) - correctly identifies semantic similarity despite different words
+- Pair 2: ~0.92 (VERY HIGH) - recognizes paraphrase
+- Pair 3: ~0.15 (VERY LOW) - correctly identifies unrelated topics
+- Pair 4: ~0.45 (LOW-MODERATE) - understands partial relationship
+- Pair 5: ~0.95 (VERY HIGH) - recognizes near-identical meaning
+
+This demonstrates the importance of using quality embeddings in production RAG systems.
 
 ---
 
