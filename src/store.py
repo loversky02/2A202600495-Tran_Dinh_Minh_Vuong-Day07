@@ -19,6 +19,7 @@ class EmbeddingStore:
         self,
         collection_name: str = "documents",
         embedding_fn: Callable[[str], list[float]] | None = None,
+        persist_directory: str | None = None,
     ) -> None:
         self._embedding_fn = embedding_fn or _mock_embed
         self._collection_name = collection_name
@@ -31,7 +32,13 @@ class EmbeddingStore:
             import chromadb  # noqa: F401
 
             # Initialize chromadb client + collection
-            client = chromadb.Client()
+            # If persist_directory is provided, use PersistentClient for disk storage
+            # Otherwise, use in-memory Client (default for tests)
+            if persist_directory:
+                client = chromadb.PersistentClient(path=persist_directory)
+            else:
+                client = chromadb.Client()
+            
             self._collection = client.get_or_create_collection(name=collection_name)
             self._use_chroma = True
         except Exception:

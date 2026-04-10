@@ -17,3 +17,9 @@ __pycache__/
 .omx/
 .venv/
 src_w_solution/
+
+# ChromaDB persistence directories
+chroma_db/
+demo_chroma_db/
+*.db
+*.sqlite3

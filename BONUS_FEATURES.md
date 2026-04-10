@@ -73,6 +73,53 @@ python test_real_embeddings.py
 - Pair 3 (unrelated): ~0.15 (VERY LOW) vs 0.18 (mock)
 - Pair 5 (identical meaning): ~0.95 (VERY HIGH) vs -0.02 (mock)
 
+### 3. ChromaDB Persistence (Optional)
+
+**Files:** `test_chromadb_persistence.py`, `demo_persistence_comparison.py`
+
+Implementation of persistent vector store that saves data to disk, surviving application restarts.
+
+**Features:**
+- **Persistent mode:** Data saved to disk using `chromadb.PersistentClient`
+- **In-memory mode:** Default behavior for testing (faster, no disk I/O)
+- **Backward compatible:** Existing code works without changes
+- **Production-ready:** Suitable for deployment scenarios
+
+**Usage:**
+```python
+# In-memory mode (default - for testing)
+store = EmbeddingStore(collection_name='my_docs')
+
+# Persistent mode (for production)
+store = EmbeddingStore(
+    collection_name='my_docs',
+    persist_directory='./chroma_db'
+)
+```
+
+**Benefits:**
+- ✅ Data survives application restarts
+- ✅ No need to re-index documents every time
+- ✅ Faster startup for large document collections
+- ✅ Suitable for production deployments
+
+**Test:**
+```bash
+# Test persistence
+python test_chromadb_persistence.py
+
+# Compare in-memory vs persistent
+python demo_persistence_comparison.py
+
+# Cleanup
+rm -rf ./chroma_db ./demo_chroma_db  # Linux/Mac
+rmdir /s /q .\chroma_db .\demo_chroma_db  # Windows
+```
+
+**Trade-offs:**
+- In-memory: Faster, good for testing, data lost on restart
+- Persistent: Slightly slower (disk I/O), suitable for production, data persists
+
 ## 📊 Comparison Results
 
 ### Custom Chunkers vs Baseline
@@ -123,6 +170,7 @@ Potential additional bonus features (not implemented):
 - Automatic evaluation metrics (precision@k, recall@k)
 - Caching for frequently accessed chunks
 - A/B testing framework for strategies
+- ~~ChromaDB persistence~~ ✅ **IMPLEMENTED**
 
 ## 📚 References
 
