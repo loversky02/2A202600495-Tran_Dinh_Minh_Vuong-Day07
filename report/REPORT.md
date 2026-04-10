@@ -211,7 +211,7 @@ I also implemented two domain-specific custom chunkers to demonstrate advanced c
 - Custom chunkers: More complex logic, domain-specific, better semantic preservation
 - Baseline chunkers: Simpler, general-purpose, faster processing
 
-See `src/custom_chunker.py` and `test_custom_chunkers.py` for implementation details.
+See `src/custom_chunker.py` for implementation details.
 
 ---
 
@@ -317,13 +317,7 @@ The `_mock_embed` function uses character-based hashing, which doesn't capture s
 
 ### Bonus: Testing with Real Embeddings (Optional)
 
-I created an optional script `test_real_embeddings.py` that uses `sentence-transformers` (all-MiniLM-L6-v2) to verify predictions with real semantic embeddings.
-
-**To run (optional):**
-```bash
-pip install sentence-transformers
-python test_real_embeddings.py
-```
+With real embeddings like `sentence-transformers` (all-MiniLM-L6-v2) or OpenAI embeddings, we would expect much better results.
 
 **Expected improvements with real embeddings:**
 - Pair 1: ~0.75 (HIGH) - correctly identifies semantic similarity despite different words
@@ -499,14 +493,6 @@ The VinUni admission documents proved to be an excellent test case, with diverse
 ---
 
 ## Appendix: Code Snippets
-
-### Chunking Comparison Script
-
-See `test_chunking_comparison.py` for the full script used to compare strategies.
-
-### Similarity Testing Script
-
-See `test_similarity.py` for the cosine similarity prediction experiments.
 
 ### Documents Created
 
